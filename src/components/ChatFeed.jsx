@@ -1,3 +1,4 @@
+import { render } from "@testing-library/react";
 import { IsTyping } from "react-chat-engine";
 import MessageForm from "./MessageForm";
 import MyMessage from "./MyMessage";
@@ -12,14 +13,21 @@ const ChatFeed = (props) => {
     const keys = Object.keys(messages);
 
     return keys.map((key, index) => {
-      const message = messages[key];
+      const message = messages[key]; // prop message is extracted from here (divs containing dynamically messages)
       const lastMessageKey = index === 0 ? null : keys[index - 1]; // checking if there are messages, find the last message
       const isMyMessage = userName === message.sender.username; // is this my message
 
       return (
         <div key={`msg_${index}`} style={{ width: "100%" }}>
           <div className="message-block">
-            {isMyMessage ? <MyMessage /> : <TheirMessage />}
+            {isMyMessage ? (
+              <MyMessage message={message} />
+            ) : (
+              <TheirMessage
+                message={message}
+                lastMessage={messages[lastMessageKey]}
+              />
+            )}
           </div>
           <div
             className="read-receipts"
@@ -34,9 +42,28 @@ const ChatFeed = (props) => {
       );
     });
   };
-  renderMessages();
 
-  return <div>ChatFeed</div>;
+  // also need to check first if there is a chat, if not, return loading text
+  if (!chat) return "Loading...";
+
+  return (
+    <div className="chat-feed">
+      <div className="chat-title-container">
+        <div className="chat-title">{chat?.title}</div>
+        <div className="chat-subtitle">
+          {chat.people.map((person) => `${person.person.username}`)}
+        </div>
+      </div>
+      {renderMessages()}
+      <div style={{ height: "100px" }} />
+      <div className="message-form-container">
+        <MessageForm {...props} chatId={activeChat} />
+      </div>
+    </div>
+    // note for div that creates chat title: "?" is present to check for a chat before we add a title
+    // note for self closing div after renderMessages(): gives some space for messages being rendered
+    //MessageForm - we need all the props so spread to grab all props; also grab chatId of the active chat
+  );
 };
 
 export default ChatFeed;
