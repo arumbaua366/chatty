@@ -1,7 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 
-const LoginForm = () => {
+const projectID = "22511e7e-57eb-418b-ae36-77ed82c12d87";
+
+const Modal = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -12,7 +14,7 @@ const LoginForm = () => {
     // get messages once we have the user info (username/password) => chatengine -> give messages -> works out -> logged in
     // if it doesn't work out => error -> try with new username
     const authObject = {
-      "Project-ID": "22511e7e-57eb-418b-ae36-77ed82c12d87",
+      "Project-ID": projectID,
       "User-Name": username,
       "User-Secret": password,
     };
@@ -24,6 +26,7 @@ const LoginForm = () => {
       localStorage.setItem("password", password);
 
       window.location.reload();
+      setError("");
     } catch (error) {
       setError("Oops, incorrect credentials.");
     }
@@ -55,11 +58,11 @@ const LoginForm = () => {
               <span>Start Chatting</span>
             </button>
           </div>
-          <h2 className="error">{error}</h2>
+          <h1>{error}</h1>
         </form>
       </div>
     </div>
   );
 };
 
-export default LoginForm;
+export default Modal;
