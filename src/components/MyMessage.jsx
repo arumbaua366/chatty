@@ -1,5 +1,5 @@
 const MyMessage = ({ message }) => {
-  if (message?.attachments?.length > 0) {
+  if (message.attachments && message.attachments.length > 0) {
     //if this message is an actual message or an image. if message is 0, then it is an image
     return (
       <img
@@ -17,7 +17,7 @@ const MyMessage = ({ message }) => {
         float: "right",
         marginRight: "18px",
         color: "white",
-        backgroundColor: "#3b2a50",
+        backgroundColor: "#3B2A50",
       }}
     >
       {message.text}
