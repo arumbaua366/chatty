@@ -1,3 +1,3 @@
 # Chatty
 
-Chat application using Chatengine.io
+Microsoft Teams chat application clone using React JS and ChatEngine.io.
